@@ -3,7 +3,7 @@ use std::{collections::HashSet, time::Duration};
 use clap::Parser;
 use rand::Rng;
 use solana_sdk::{
-    instruction::Instruction, pubkey::Pubkey, signer::Signer, system_instruction, transaction::Transaction,
+    pubkey::Pubkey, signer::Signer, system_instruction, transaction::Transaction,
 };
 use tracing::{error, info};
 
@@ -40,6 +40,8 @@ impl Miner {
                 .for_each(|(account, signer)| {
                     if account.is_some() {
                         registered.insert(signer.pubkey());
+
+                        info!("pubkey {}", signer.pubkey())
                     }
                 });
         }
@@ -69,6 +71,11 @@ impl Miner {
                 let mut signers = vec![];
 
                 for signer in batch {
+                    let balance = client.get_balance(&signer.pubkey()).await.unwrap();
+
+                    info!("payer: {}", signer.pubkey());
+                    info!("balance: {}", balance);
+
                     ixs.push(system_instruction::transfer(
                         &signer.pubkey(),
                         &args.recipient,
@@ -78,6 +85,8 @@ impl Miner {
                 }
 
                 let fee_payer = signers[rand::thread_rng().gen_range(0..signers.len())].pubkey();
+
+                info!("fee payer : {}", fee_payer);
 
                 if txs.is_empty() {
                     ixs.push(jito::build_bribe_ix(&fee_payer, jito_tip));

@@ -1,37 +1,7 @@
-use std::{collections::HashMap, env, path::PathBuf};
+use std::{collections::HashMap};
 
-use cached::proc_macro::cached;
 use solana_sdk::{commitment_config::CommitmentConfig, pubkey::Pubkey, signature::Signature};
 use solana_transaction_status::TransactionStatus;
-
-#[cached]
-pub fn get_proof_pda(authority: Pubkey) -> Pubkey {
-    Pubkey::find_program_address(&[ore::PROOF, authority.as_ref()], &ore::ID).0
-}
-
-#[cached]
-pub fn get_treasury_ata() -> Pubkey {
-    spl_associated_token_account::get_associated_token_address(&ore::TREASURY_ADDRESS, &ore::MINT_ADDRESS)
-}
-
-#[cached]
-pub fn get_ore_ata(owner: Pubkey) -> Pubkey {
-    spl_associated_token_account::get_associated_token_address(&owner, &ore::MINT_ADDRESS)
-}
-
-pub fn ore_ui_amount(amount: u64) -> f64 {
-    spl_token::amount_to_ui_amount(amount, ore::TOKEN_DECIMALS)
-}
-
-#[cached]
-pub fn get_gpu_nonce_worker_path() -> PathBuf {
-    env::current_exe().unwrap().parent().unwrap().join("nonce-worker-gpu")
-}
-
-#[cached]
-pub fn get_nonce_worker_path() -> PathBuf {
-    env::current_exe().unwrap().parent().unwrap().join("nonce-worker")
-}
 
 pub fn find_landed_txs(signatures: &[Signature], statuses: Vec<Option<TransactionStatus>>) -> Vec<Signature> {
     let landed_tx = statuses
