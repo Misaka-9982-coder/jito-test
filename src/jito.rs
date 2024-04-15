@@ -92,16 +92,6 @@ pub struct JitoTips {
     pub p99_landed: f64,
 }
 
-impl JitoTips {
-    pub fn p50(&self) -> u64 {
-        (self.p50_landed * 1e9f64) as u64
-    }
-
-    pub fn p25(&self) -> u64 {
-        (self.p25_landed * 1e9f64) as u64
-    }
-}
-
 impl std::fmt::Display for JitoTips {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(

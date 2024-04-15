@@ -17,7 +17,7 @@ pub struct BatchTransferArgs {
     #[arg(long, help = "The recipient address to receive SOL")]
     pub recipient: Pubkey,
 
-    #[arg(long, help = "The amount of SOL to transfer")]
+    #[arg(long, help = "The amount of Lamports to transfer")]
     pub amount: u64,
 }
 
