@@ -36,6 +36,7 @@ use tracing::{error, log};
 mod constant;
 mod jito;
 mod utils;
+mod bundle_transfer;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() {
@@ -44,6 +45,7 @@ async fn main() {
 
     match &miner.command {
         Command::JitoTipStream => miner.jito_tip_stream().await,
+        Command::BundlTransfer(args) => miner.bundle_transfer(args).await,
     }
 }
 
@@ -62,6 +64,7 @@ pub struct Miner {
 #[derive(Subcommand, Debug, Clone)]
 pub enum Command {
     JitoTipStream,
+    BundlTransfer(crate::bundle_transfer::BatchTransferArgs),
 }
 
 impl Miner {
