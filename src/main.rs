@@ -45,7 +45,7 @@ async fn main() {
 
     match &miner.command {
         Command::JitoTipStream => miner.jito_tip_stream().await,
-        Command::BundlTransfer(args) => miner.bundle_transfer(args).await,
+        Command::BundleTransfer(args) => miner.bundle_transfer(args).await,
     }
 }
 
@@ -64,7 +64,7 @@ pub struct Miner {
 #[derive(Subcommand, Debug, Clone)]
 pub enum Command {
     JitoTipStream,
-    BundlTransfer(crate::bundle_transfer::BatchTransferArgs),
+    BundleTransfer(crate::bundle_transfer::BatchTransferArgs),
 }
 
 impl Miner {
